@@ -344,7 +344,6 @@ char ** LerComandos(){
     }
     if(verificaEstado == 2){
         if(*p == ' '){
-          tamanhoDoToken;
           matrizDeArgumentos[numeroDoComando] = malloc(tamanhoDoToken * sizeof(char));
           memcpy(matrizDeArgumentos[numeroDoComando], inicioDoToken, tamanhoDoToken);
           verificaEstado = 0;
