@@ -5,9 +5,9 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+
 #define TRUE 1
 #define FALSE 0
-
 #define NUMERO_DE_BYTES 4000
 #define TAMANHO_DA_ENTRADA 250
 
@@ -187,11 +187,9 @@ int * DefineEntradaDoPipe(int argc, char ** argv){
     CopiaArquivo(entradaDoDescritorDeArquivo, pipeAux[1]);
     close(pipeAux[1]);
 
-    
     ExecutaSequenciaDeComandos(RemoveOperadores(argc, argv), quantidadeDeComandos, 
     comandosDeEntrada, pipeAux, entradaDoPipe);
     
-
     close(entradaDoPipe[1]);
     return entradaDoPipe;
   }
@@ -275,7 +273,6 @@ int * PegaSequenciaDePipes(int inicio, int argc, char ** argv){
 char ** LerComandos(){
   char * comando = malloc(TAMANHO_DA_ENTRADA * sizeof(char));
 
-  
   printf("digite o comando: ");  
   scanf("%[^\n]%*c", comando);
 
