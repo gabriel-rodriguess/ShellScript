@@ -75,7 +75,7 @@ int * ExecutaSequenciaDeComandos(char ** comandos,
 
     // processo filho
     if(filho[i] == 0){
-      if(i == 0){//primeiro comand
+      if(i == 0){//primeiro comando
         if(entradaDoPipe != NULL){
           dup2(entradaDoPipe[0], STDIN_FILENO);
         }
