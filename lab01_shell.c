@@ -59,7 +59,7 @@ int * ExecutaSequenciaDeComandos(char ** comandos,
 
   i = inicioDoComando[quantidadeDeComandos - 1];
   
-  int **descritorDeArquivo = malloc(quantidadeDeComandos + sizeof(int *)); //pq mais?
+  int **descritorDeArquivo = malloc(quantidadeDeComandos + sizeof(int *));
   for(i = 0; i < quantidadeDeComandos; i++){
     descritorDeArquivo[i] = malloc(2 * sizeof(int));
     pipe(descritorDeArquivo[i]);
@@ -73,9 +73,8 @@ int * ExecutaSequenciaDeComandos(char ** comandos,
 
     filho[i] = fork();
 
-    // processo filho
     if(filho[i] == 0){
-      if(i == 0){//primeiro comando
+      if(i == 0){
         if(entradaDoPipe != NULL){
           dup2(entradaDoPipe[0], STDIN_FILENO);
         }
@@ -138,7 +137,7 @@ int CopiaArquivo(int entradaDescritorDeArquivo, int saidaDescritorDeArquivo){
         close(saidaDescritorDeArquivo);
         return -1;
       }
-      while(numeroDeBytesEscritos < numeroDeBytesLidos){ // para arrumar bytes faltando???
+      while(numeroDeBytesEscritos < numeroDeBytesLidos){ 
         n = write(saidaDescritorDeArquivo, buffer + numeroDeBytesEscritos, 
         numeroDeBytesLidos - numeroDeBytesEscritos); 
 
@@ -165,16 +164,11 @@ int * DefineEntradaDoPipe(int argc, char ** argv){
   }
   
   int * entradaDoPipe = malloc(2 * sizeof(int));
-  if(pipe(entradaDoPipe) < 0){// tratativa de erro? retorno -1 para erro e 0 para sucesso
+  if(pipe(entradaDoPipe) < 0){
     perror("Erro PIPE!");
     return NULL;
   } 
 
-
-  /* Quando um novo arquivo e criado, se faz necessario definir a permissao que cada 
-  grupo tera. Sendo assim, as flags: O_RDONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH 
-  permitem a leitura e escrita pelo proprietario apenas leitura por membros e outros
-  grupos. */
   int entradaDoDescritorDeArquivo = open(argv[posicaoDeEntrada + 1], 
       O_RDONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
   
@@ -210,15 +204,14 @@ int * DefineEntradaDoPipe(int argc, char ** argv){
 int EncontraOperador(char * operador, int argc, char ** argv){
   for(int i = 0; i < argc; i++){
     if(strcmp(operador, argv[i]) == 0)
-      //printf("\nEncontrou um operador\n");
       return i;
   }
-  //printf("\nNão encontrou nenhum operador\n");
+
   return -1;
 }
 
 char ** RemoveOperadores(int argc, char ** argv){
-  char ** comandos = malloc((argc + 1) * sizeof(char *));  // ???
+  char ** comandos = malloc((argc + 1) * sizeof(char *));  
   int tamanho;
 
   for(int i = 0; i < argc; i++){
@@ -230,8 +223,7 @@ char ** RemoveOperadores(int argc, char ** argv){
       comandos[i] = NULL;
   }
   comandos[argc] = NULL;
-  //printf("\nRemovendo operadores\n");
-  //ImprimeString(argc, comandos);
+
   return comandos;
 }
 
@@ -241,7 +233,7 @@ int ContaPipe(int inicio, int argc, char ** argv){
     if(EhOperador(argv[i])){
       if(strcmp(argv[i], "|") == 0){
         contador++;
-        //printf("\nnumero de pipes: %d", contador);
+
       }
       else
       break;
@@ -264,7 +256,7 @@ int * PegaSequenciaDePipes(int inicio, int argc, char ** argv){
   inicioDoComando[0] = inicio;
 
   for(i = inicio; i < argc; i++){
-    //printf("aqui: %s\n", argv[i]);
+
     if(argv[i] == NULL)
       break;
     
@@ -291,7 +283,7 @@ char ** LerComandos(){
   int c, tamanhoDoToken = 0, quantidadeDeLinhas = 0, i;
 
   int verificaEstado = 0;
-   // quantidadeDeLinhas: armazena a quantidade de linhas com comandos da matriz
+
   for(p = comando; *p != '\0'; p++){
     if(verificaEstado == 0){
         if(*p == ' ') 
@@ -361,14 +353,13 @@ char ** LerComandos(){
         }
         tamanhoDoToken++;
         continue;        
-    }//fim do antigo switch, atual if
-  }//fim do for
-    // armazena a ultima linha, caso seja uma palavra
+    }
+  }
+    
     if(verificaEstado == 2){
       matrizDeArgumentos[numeroDoComando] = malloc(tamanhoDoToken * sizeof(char));
       memcpy(matrizDeArgumentos[numeroDoComando], inicioDoToken, tamanhoDoToken);
     }
-  //ImprimeString(quantidadeDeLinhas, matrizDeArgumentos);
   return matrizDeArgumentos;
 }
 
@@ -385,19 +376,17 @@ int PegaQuantidadeDeComandos(char ** comandos){
 int main(int argc, char  **argv)
 {
   while(1){
-    char ** comandos = LerComandos(); // comandos = matriz de argumentos
+    char ** comandos = LerComandos();
     int quantidadeDeComandos = PegaQuantidadeDeComandos(comandos);
-    //printf("quantidade de comandos: %d", quantidadeComandos);
 
     if(quantidadeDeComandos > 0){
-      int * inicioDoComando = PegaSequenciaDePipes(0, quantidadeDeComandos, comandos); // vetor onde começa cada comando
-      int quantidadeDeOperacoes = ContaPipe(0, quantidadeDeComandos, comandos); // números de pipes ( n + 1 = quantidade de operações)
-      char ** entradaDoUsuario = RemoveOperadores(quantidadeDeComandos, comandos); // Retorna matriz com null nas posições dos operadores
+      int * inicioDoComando = PegaSequenciaDePipes(0, quantidadeDeComandos, comandos); 
+      int quantidadeDeOperacoes = ContaPipe(0, quantidadeDeComandos, comandos); 
+      char ** entradaDoUsuario = RemoveOperadores(quantidadeDeComandos, comandos); 
 
-      int quantidadeDeComandosExecutados = quantidadeDeOperacoes + 1; // quantidades de pipes + 1 = total de comandos
+      int quantidadeDeComandosExecutados = quantidadeDeOperacoes + 1; 
 
-      int posicaoDeEntrada = EncontraOperador("<", quantidadeDeComandos, comandos); // Apenas encontra posicao operador de entrada -- sem utilidade ?
-      int posicaoDeSaida = EncontraOperador(">", quantidadeDeComandos, comandos); // Apenas encontra posicao operador de saida
+      int posicaoDeSaida = EncontraOperador(">", quantidadeDeComandos, comandos); 
 
       int * entradaDoPipe = DefineEntradaDoPipe(quantidadeDeComandos, comandos); 
       int * saidaDoPipe = DefineSaidaDoPipe(quantidadeDeComandos, comandos);
