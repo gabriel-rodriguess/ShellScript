@@ -37,8 +37,8 @@ void ImprimeString(int argc, char ** argv){
 }
 
 int * DefineSaidaDoPipe(int argc, char ** argv){
-  int posicaoDaSaide = EncontraOperador(">", argc, argv);
-  if(posicaoDaSaide == -1)
+  int posicaoDaSaida = EncontraOperador(">", argc, argv);
+  if(posicaoDaSaida == -1)
     return NULL;
   
   int * saidaDoPipe = malloc(2 * sizeof(int));
@@ -344,7 +344,6 @@ char ** LerComandos(){
     }
     if(verificaEstado == 2){
         if(*p == ' '){
-          tamanhoDoToken;
           matrizDeArgumentos[numeroDoComando] = malloc(tamanhoDoToken * sizeof(char));
           memcpy(matrizDeArgumentos[numeroDoComando], inicioDoToken, tamanhoDoToken);
           verificaEstado = 0;
@@ -414,5 +413,3 @@ int main(int argc, char  **argv)
   }
   return 0;
 }
-
-
