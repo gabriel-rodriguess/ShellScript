@@ -7,7 +7,7 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include "shell.c"
+#include "shell_lib.c"
 #endif
 
 char ** LerComandos();

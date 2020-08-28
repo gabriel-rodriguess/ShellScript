@@ -6,7 +6,7 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include "shell.h"
+#include "shell_lib.h"
 
 #define TRUE 1
 #define FALSE 0

@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include "shell.h"
+#include "shell_lib.h"
 
 int main(int argc, char  **argv)
 {
